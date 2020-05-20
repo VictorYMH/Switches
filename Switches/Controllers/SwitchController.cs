@@ -15,6 +15,7 @@ namespace Switches.Controllers
 
         private readonly ILogger<SwitchController> _logger;
         private readonly RedisService _redisService;
+        private readonly string _switchKey="Switches";
 
         public SwitchController(ILogger<SwitchController> logger, RedisService redisService)
         {
@@ -25,13 +26,13 @@ namespace Switches.Controllers
         [HttpGet]
         public async Task<string> Get()
         {
-            return await _redisService.Get("Switches");
+            return await _redisService.Get(_switchKey);
         }
 
         [HttpPost]
         public async Task<bool> POST(IEnumerable<object> statuses)
         {
-            return await _redisService.SetArray("Switches", statuses);
+            return await _redisService.SetArray(_switchKey, statuses);
         }
     }
 }

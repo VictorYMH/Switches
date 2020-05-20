@@ -14,6 +14,7 @@ namespace Switches.Data.RedisService
         private readonly string _redisHost;
         private readonly string _redisPassword;
         private readonly int _redisPort;
+        private readonly string _redisConnectionString;
         private ConnectionMultiplexer _redis;
 
         public RedisService(IConfiguration config)
@@ -21,13 +22,15 @@ namespace Switches.Data.RedisService
             _redisHost = config["Redis:Host"];
             _redisPort = Convert.ToInt32(config["Redis:Port"]);
             _redisPassword = config["Redis:Password"];
+            _redisConnectionString = config["RedisConnectionString"];
         }
 
         public void Connect()
         {
             //var configString = $"{_redisHost}:{_redisPort}";
-            var configString = $"{_redisHost}:{_redisPort},password={_redisPassword},connectRetry=5";
-            _redis = ConnectionMultiplexer.Connect(configString);
+            var redisConnectionString = !string.IsNullOrEmpty(_redisConnectionString)?_redisConnectionString:$"{_redisHost}:{_redisPort},connectRetry=5"+(!string.IsNullOrEmpty(_redisPassword) ? $",password={_redisPassword}" : string.Empty);
+
+            _redis = ConnectionMultiplexer.Connect(redisConnectionString);
         }
 
         public async Task<bool> SetArray(string key, IEnumerable<object> values)

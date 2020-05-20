@@ -28,30 +28,44 @@ namespace Switches
         {
             services.AddControllers()
                 .AddNewtonsoftJson();
-            services.AddSingleton<RedisService>();
+
+            services.AddSingleton<RedisService>(); 
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("default", policy =>
+                {
+                        policy.AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                });
+            });
+            services.AddMvc(s => s.EnableEndpointRouting = false).SetCompatibilityVersion(CompatibilityVersion.Latest);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, RedisService redisService)
         {
+            app.UseCors("default");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseDefaultFiles();
             app.UseStaticFiles();
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
-            app.UseRouting();
+            //app.UseRouting();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-
+            // app.UseEndpoints(endpoints =>
+            // {
+            //     endpoints.MapControllers();
+            // });
+            app.UseMvc();
             redisService.Connect();
         }
     }
