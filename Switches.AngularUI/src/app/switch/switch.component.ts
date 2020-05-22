@@ -8,18 +8,18 @@ import { SwitchService } from '../services/switch.service';
 })
 export class SwitchComponent implements OnInit {
 
-  @Output() backgroundUpdated = new EventEmitter();
+  @Output() greenUpdated = new EventEmitter();
 
   switches: boolean[];
   backgroundColor = 'rgb(0,0,255)';
+  greenValue = 0;
 
   constructor(private switchService: SwitchService) { }
 
   ngOnInit(): void {
     this.switchService.getSwitches()
       .subscribe((res: boolean[]) => {
-        this.switches = res;
-        this.backgroundUpdated.emit(this.backgroundColor);
+        this.getSwitchesCallback(res);
       });
 
   }
@@ -32,17 +32,29 @@ export class SwitchComponent implements OnInit {
           if (postRes) {
             this.switchService.getSwitches()
               .subscribe((res: boolean[]) => {
-                this.switches = res;
-                const green = (255 / this.switches.length) * this.switches.filter(s => s).length;
-                console.log(green);
-                this.backgroundColor = `rgb(0,${green},255)`;
-                this.backgroundUpdated.emit(this.backgroundColor);
+                this.getSwitchesCallback(res);
               });
           }
         });
   }
 
+  getSwitchesCallback(array: boolean[]) {
+    this.switches = array;
+    this.greenValue = this.getGreenValue(array);
+    this.backgroundColor = `rgb(0,${this.greenValue},255)`;
+    this.greenUpdated.emit(this.greenValue);
+  }
 
+  getGreenValue(array: boolean[]) {
+    let maxBinaryStr = '';
+    let binaryStr = '';
+    array.forEach(s => {
+      maxBinaryStr += '1';
+      binaryStr += s ? '1' : '0';
+    });
+    const ratio = parseInt(binaryStr, 2) / parseInt(maxBinaryStr, 2);
+    return (255 * ratio);
+  }
 
 
   identify(index, item) {

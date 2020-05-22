@@ -1,9 +1,9 @@
 <div class="container-fluid h-25" [ngStyle]="{'background-color': backgroundColor}">
   <div class="row h-100 justify-content-center align-items-center">
     <div class="col">
-      <h1 class="text-center" [ngStyle]="{'color': '#ff4081'}">{{title}}</h1>
+      <h1 class="text-center" [ngStyle]="{'color': fontColor}">{{title}}</h1>
     </div>
   </div>
 </div>
-<app-switch (backgroundUpdated)="handleBackgroundUpdated($event)"></app-switch>
+<app-switch (greenUpdated)="handleGreenUpdated($event)"></app-switch>
 <router-outlet></router-outlet>
