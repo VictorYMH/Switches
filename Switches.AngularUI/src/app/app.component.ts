@@ -7,11 +7,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Switches';
-  backgroundColor = 'rgb(0,0,255)';
-  fontColor = 'rgb(255,0,0)';
+  backgroundColor = 'rgb(133, 159, 171)';
+  fontColor = 'rgb(142, 0, 48)';
 
   handleGreenUpdated(greenValue) {
-    this.backgroundColor = `rgb(0,${greenValue},255)`;
-    this.fontColor = `rgb(255,${greenValue},0)`;
+    this.backgroundColor = `rgb(${greenValue},${greenValue},${greenValue})`;
   }
 }

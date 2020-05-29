@@ -11,7 +11,7 @@ export class SwitchComponent implements OnInit {
   @Output() greenUpdated = new EventEmitter();
 
   switches: boolean[];
-  backgroundColor = 'rgb(0,0,255)';
+  backgroundColor = 'rgb(133, 159, 171)';
   greenValue = 0;
 
   constructor(private switchService: SwitchService) { }
@@ -41,7 +41,7 @@ export class SwitchComponent implements OnInit {
   getSwitchesCallback(array: boolean[]) {
     this.switches = array;
     this.greenValue = this.getGreenValue(array);
-    this.backgroundColor = `rgb(0,${this.greenValue},255)`;
+    this.backgroundColor = `rgb(${this.greenValue},${this.greenValue},${this.greenValue})`;
     this.greenUpdated.emit(this.greenValue);
   }
 
