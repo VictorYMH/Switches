@@ -26,31 +26,6 @@ FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS runtime
 WORKDIR /app
 #将打包发布得到的dll等文件考入 /out./ 目录
 COPY --from=build /app/Switches/out ./
-#设置入口dll为BackEndDemo（即最上层的webapi）
+#设置入口dll为Switches（即最上层的webapi）
 ENTRYPOINT ["dotnet", "Switches.dll"]
 
-
-
-# FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
-# WORKDIR /app
-# EXPOSE 80
-# EXPOSE 443
-
-# FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
-# WORKDIR /src
-# COPY ["Switches/Switches.csproj", "Switches/"]
-# COPY ["Switches.Data/Switches.Data.csproj", "Switches.Data/"]
-# RUN dotnet restore "Switches/Switches.csproj"
-# COPY . .
-# WORKDIR "/src/Switches"
-# RUN dotnet build "Switches.csproj" -c Release -o /app/build
-# WORKDIR "/src/Switches.Data"
-# RUN dotnet build "Switches.Data.csproj" -c Release -o /app/build
-
-# FROM build AS publish
-# RUN dotnet publish "Switches.csproj" -c Release -o /app/publish
-
-# FROM base AS final
-# WORKDIR /app
-# COPY --from=publish /app/publish .
-# ENTRYPOINT ["dotnet", "Switches.dll"]
